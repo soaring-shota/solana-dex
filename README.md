@@ -1,81 +1,81 @@
-# Solana DEX 智能交易合约
+# Solana DEX Smart Trading Contract
 
-这是一个基于Solana区块链的智能合约项目，实现了与Pump.fun和Raydium去中心化交易所(DEX)的自动交易功能。该合约允许用户在这两个DEX上执行代币的买入和卖出操作，并提供智能路由功能，自动选择Token所在的DEX进行交易。此外，项目还实现了MEV保护功能，有效防止交易被抢先交易攻击。
+This is a smart contract project based on the Solana blockchain, enabling automated trading with the decentralized exchanges (DEX) Pump.fun and Raydium. The contract allows users to execute token buy and sell operations on these DEXs and provides smart routing functionality to automatically select the DEX where the token resides for trading. Additionally, the project integrates MEV protection to effectively prevent front-running attacks on transactions.
 
-## 功能特点
+## Features
 
-- **多DEX支持**：支持在Pump.fun和Raydium上进行交易
-- **买入功能**：用户可以使用SOL购买特定代币
-- **卖出功能**：用户可以卖出代币获取SOL
-- **智能路由**：自动选择Token所在Dex进行交易
-- **滑点控制**：设置滑点参数，确保交易在预期的价格范围内执行
-- **MEV保护**：通过承诺-揭示模式防止抢先交易攻击
-- **批量交易**：支持批量创建和执行交易承诺，提高交易效率
-- **高频交易优化**：针对高频交易场景进行了多项性能优化
+- **Multi-DEX Support**: Supports trading on Pump.fun and Raydium
+- **Buy Functionality**: Users can purchase specific tokens with SOL
+- **Sell Functionality**: Users can sell tokens to obtain SOL
+- **Smart Routing**: Automatically selects the DEX where the token resides for trading
+- **Slippage Control**: Sets slippage parameters to ensure that transactions are executed within the expected price range
+- **MEV Protection**: Prevents front-running attacks with a commit-reveal scheme
+- **Batch Trading**: Supports the creation and execution of multiple trade commitments, improving trading efficiency
+- **High-Frequency Trading Optimization**: Includes specific performance optimizations for high-frequency trading scenarios
 
-## 技术架构
+## Technical Architecture
 
-- **开发框架**：使用Anchor框架进行Solana智能合约开发
-- **编程语言**：Rust (合约)，TypeScript (客户端和测试)
-- **区块链**：Solana
-- **交互协议**：通过CPI调用与Raydium和Pump.fun协议交互
+- **Development Framework**: Built using the Anchor framework for Solana smart contract development
+- **Programming Languages**: Rust (smart contract), TypeScript (client and tests)
+- **Blockchain**: Solana
+- **Interaction Protocols**: Utilizes CPI calls to interact with Raydium and Pump.fun protocols
 
-## 安装和设置
+## Installation and Setup
 
-### 前提条件
+### Prerequisites
 
-- 安装 [Rust](https://www.rust-lang.org/tools/install)
-- 安装 [Solana CLI](https://docs.solana.com/cli/install-solana-cli-tools)
-- 安装 [Anchor](https://project-serum.github.io/anchor/getting-started/installation.html)
-- 安装 [Node.js](https://nodejs.org/) 和 [Yarn](https://yarnpkg.com/)
+- Install [Rust](https://www.rust-lang.org/tools/install)
+- Install [Solana CLI](https://docs.solana.com/cli/install-solana-cli-tools)
+- Install [Anchor](https://project-serum.github.io/anchor/getting-started/installation.html)
+- Install [Node.js](https://nodejs.org/) and [Yarn](https://yarnpkg.com/)
 
-### 安装依赖
+### Install Dependencies
 
 ```bash
-# 安装Rust依赖
+# Install Rust dependencies
 cargo build
 
-# 安装Node.js依赖
+# Install Node.js dependencies
 yarn install
 ```
 
-## 构建和测试
+## Building and Testing
 
-### 构建合约
+### Build Contracts
 
 ```bash
 anchor build
 ```
 
-### 运行测试
+### Run Tests
 
 ```bash
 anchor test
 ```
 
-## 部署
+## Deployment
 
-### 部署到本地网络
+### Deploy to Local Network
 
 ```bash
 anchor localnet
 ```
 
-### 部署到开发网络
+### Deploy to Devnet
 
 ```bash
 anchor deploy --provider.cluster devnet
 ```
 
-### 部署到主网
+### Deploy to Mainnet
 
 ```bash
 anchor deploy --provider.cluster mainnet
 ```
 
-## 使用指南
+## Usage Guide
 
-### 初始化DEX账户
+### Initialize DEX Account
 
 ```typescript
 await program.methods
@@ -88,53 +88,53 @@ await program.methods
   .rpc();
 ```
 
-### 在Pump.fun上购买代币
+### Buy Tokens on Pump.fun
 
 ```typescript
 await program.methods
   .pumpBuy(
-    new BN(amountIn), // SOL数量
-    new BN(minAmountOut) // 最小获得的代币数量
+    new BN(amountIn), // Amount of SOL
+    new BN(minAmountOut) // Minimum amount of tokens to receive
   )
   .accounts({
-    // 账户参数
+    // Account parameters
   })
   .rpc();
 ```
 
-### 在Raydium上购买代币
+### Buy Tokens on Raydium
 
 ```typescript
 await program.methods
   .raydiumBuy(
-    new BN(amountIn), // SOL数量
-    new BN(minAmountOut) // 最小获得的代币数量
+    new BN(amountIn), // Amount of SOL
+    new BN(minAmountOut) // Minimum amount of tokens to receive
   )
   .accounts({
-    // 账户参数
+    // Account parameters
   })
   .rpc();
 ```
 
-### 使用智能路由进行交易
+### Trade Using Smart Routing
 
 ```typescript
 await program.methods
   .smartTrade(
     tokenMint,
-    new BN(amountIn), // 输入数量
-    new BN(minAmountOut), // 最小输出数量
-    isBuy // true表示买入，false表示卖出
+    new BN(amountIn), // Input amount
+    new BN(minAmountOut), // Minimum output amount
+    isBuy // true for buy, false for sell
   )
   .accounts({
-    // 账户参数
+    // Account parameters
   })
   .rpc();
 ```
 
-### 使用MEV保护功能
+### Use MEV Protection
 
-#### 创建交易承诺
+#### Create Trade Commitment
 
 ```typescript
 const nonce = generateRandomNonce();
@@ -152,12 +152,12 @@ await program.methods
     new BN(slotDelay)
   )
   .accounts({
-    // 账户参数
+    // Account parameters
   })
   .rpc();
 ```
 
-#### 执行交易承诺
+#### Execute Trade Commitment
 
 ```typescript
 await program.methods
@@ -169,12 +169,12 @@ await program.methods
     nonce
   )
   .accounts({
-    // 账户参数
+    // Account parameters
   })
   .rpc();
 ```
 
-#### 批量执行交易承诺
+#### Batch Execute Trade Commitments
 
 ```typescript
 await program.methods
@@ -182,40 +182,32 @@ await program.methods
     commitmentIds
   )
   .accounts({
-    // 账户参数
+    // Account parameters
   })
   .rpc();
 ```
 
-## 性能优化
+## Performance Optimizations
 
-本项目针对高频交易场景进行了多项优化：
+This project includes various optimizations for high-frequency trading scenarios:
 
-- **减少账户加载时间**：优化了池状态加载逻辑
-- **批量交易功能**：支持在一个交易中执行多个操作
-- **安全算术运算**：使用安全的算术运算防止溢出错误
-- **减少存储操作**：最小化链上存储操作，降低Gas成本
-- **预计算常量**：避免重复计算，提高执行效率
+- **Reduced Account Loading Time**: Optimized logic for loading pool states
+- **Batch Trading Functionality**: Supports executing multiple operations in a single transaction
+- **Secure Arithmetic Operations**: Ensures calculations are safe from overflow errors
+- **Minimized Storage Operations**: Reduces on-chain storage operations to lower gas costs
+- **Precomputed Constants**: Avoids repeated calculations to improve efficiency
 
-## 安全增强
+## Security Enhancements
 
-- **重入攻击保护**：实现了重入锁机制
-- **价格影响检查**：防止市场操纵和滑点攻击
-- **MEV保护**：通过承诺-揭示模式防止抢先交易
-- **详细错误处理**：提供更具体的错误类型和消息
+- **Re-entrancy Protection**: Implements a re-entrancy lock mechanism
+- **Price Impact Check**: Prevents market manipulation and slippage attacks
+- **MEV Protection**: Uses a commit-reveal scheme to prevent front-running attacks
+- **Detailed Error Handling**: Provides more specific error types and messages
 
-## 注意事项
+## Considerations
 
-- **安全性**：在使用合约进行交易前，请确保了解相关风险
-- **滑点设置**：根据市场波动情况，合理设置滑点参数
-- **交易规则**：遵守Pump.fun和Raydium的交易规则
-- **MEV保护**：使用承诺-揭示模式时，需要等待足够的区块确认
-
-## 贡献指南
-
-1. Fork 项目
-2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
-3. 提交更改 (`git commit -m 'Add some amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 创建Pull Request
+- **Security**: Ensure you understand the risks before trading with the contract.
+- **Slippage Settings**: Set slippage parameters appropriately based on market volatility.
+- **Trading Rules**: Follow the trading rules of Pump.fun and Raydium.
+- **MEV Protection**: When using the commit-reveal scheme, wait for sufficient block confirmations.
 
